@@ -2,17 +2,41 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
+namespace Game.Player
 {
-    // Start is called before the first frame update
-    void Start()
+    public class PlayerController : MonoBehaviour
     {
-        
-    }
+        private PlayerMovementStateMachine movementStateMachine;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        private void Start()
+        {
+            movementStateMachine = new PlayerMovementStateMachine(this);
+        }
+
+        private void Update()
+        {
+            movementStateMachine.HandleInput();
+            movementStateMachine.Update();
+        }
+
+        private void LateUpdate()
+        {
+            movementStateMachine.PhysicsUpdate();
+        }
+
+        public void OnMovementStateAnimationEnterEvent()
+        {
+            movementStateMachine.OnAnimationEnterEvent();
+        }
+
+        public void OnMovementStateAnimationTransitionEvent()
+        {
+            movementStateMachine.OnAnimationTransitionEvent();
+        }
+
+        public void OnMovementStateAnimationExitEvent()
+        {
+            movementStateMachine.OnAnimationExitEvent();
+        }
     }
 }
